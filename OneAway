@@ -1,0 +1,71 @@
+package test.test1;
+
+import java.util.*;
+
+class Solution {
+	public static void main(String args[]) {
+		Solution sol = new Solution();
+		System.out.println(sol.oneEdit("pale", "bake"));
+	}
+
+	// pale, ple - true
+	// pales, pale - true
+	// pale, bale - true
+	// pale, bake - false
+	private boolean oneEdit(String str, String str1) {
+		int m = str.length();
+		int n = str1.length();
+
+
+		// equal string case
+		if (str.equals(str1))
+			return false;
+
+		int diff = 0;
+		// equal length case, one char edit
+		if (m == n) {
+			for (int i = 0; i < m; i++) {
+				if (str.charAt(i) != str1.charAt(i)) {
+					diff++;
+				}
+			}
+			if (diff == 1) {
+				return true;
+			} else
+				return false;
+		}
+		// ate - m aete - n
+		// add char case
+		if (m + 1 == n) {
+			int k =0;
+			for (int i = 0; i < m; i++) {
+				k =i+1;
+				if(str1.indexOf(str.charAt(i)) == -1) {
+				//if (!str1.contains("" + str.charAt(i))) {
+					diff++;
+				}
+			}
+			if (n-k == 1) {
+				return true;
+			} else
+				return false;
+		}
+
+		// remove char case
+		// ates ate
+		if(m - 1 == n) {
+			int k =0;
+			for(int j = 0; j < n; j++) {
+				k =k+1;
+				if(str.indexOf(str1.charAt(j)) == -1) {
+					diff++;
+				}
+			}
+			if(m-k == 1) {
+				return true;
+			} else
+				return false;
+		}
+		return false;
+	}
+}
