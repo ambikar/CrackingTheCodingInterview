@@ -1,0 +1,39 @@
+package test.test1;
+
+import java.util.*;
+
+class Solution {
+	public static void main(String args[]) {
+		Solution sol = new Solution();
+		System.out.println(sol.strCompress("aabcccccaaa"));
+	}
+
+	private String strCompress(String str) {
+		StringBuilder sb = new StringBuilder();
+		int count = 0;
+		for (int i = 0; i < str.length(); i++) {
+			++count;
+			if (i + 1 >= str.length() || str.charAt(i) != str.charAt(i + 1)) {
+				sb.append(str.charAt(i));
+				sb.append(Integer.toString(count));
+				count = 0;
+			}
+		}
+		return sb.toString();
+	}
+	
+	String compress( String str ) {
+		StringBuilder compressed = new StringBuilder();
+		int count = 0;
+		for (int i = 0; i < str.length(); ++i) {
+			++count;
+			if (i + 1 >= str.length() || str.charAt(i) != str.charAt(i+1)) {// last case, next char diff than current
+				compressed.append(str.charAt(i));
+				compressed.append(count);
+				count = 0;
+			}
+		}
+		return compressed.length() < str.length() ? compressed.toString() : str;
+	}
+
+}
