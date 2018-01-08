@@ -1,0 +1,42 @@
+package test.test1;
+
+import java.util.Arrays;
+
+class Solution {
+	public static void main(String args[]) {
+		Solution sol = new Solution();
+		int[][] matrix = {{4,3,2,1},
+						 {2,4,5,2},
+						 {1,1,0,1},
+						 {4,3,2,1}};
+		
+		System.out.println(Arrays.deepToString(sol.zeroMatrix(matrix)));
+	}
+	
+	private int[][] zeroMatrix(int[][] matrix) {
+		int row =0, col =0;
+		
+		for(int i =0; i<matrix.length; i++) {
+			for(int j =0; j < matrix[0].length; j++) {
+				if(matrix[i][j]==0) {
+					row = i; col = j;
+				}
+			}
+		}
+		
+		for(int i =0; i<matrix.length; i++) {
+			for(int j =0; j < matrix[0].length; j++) {
+				if(i ==row) {
+					matrix[row][j] =0;
+				}
+				if(j==col) {
+					matrix[i][col] =0;
+				}
+			}
+		}		
+		return matrix;
+	}
+
+}
+
+  
