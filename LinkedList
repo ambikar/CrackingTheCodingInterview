@@ -1,0 +1,350 @@
+package test.test1;
+
+class Solution {
+	public static void main(String args[]) {
+
+		LinkedList1 list = new LinkedList1();
+
+		// Insert in LL
+		list.insert(7, list.first);
+		list.insert(1, list.first);
+		list.insert(6, list.first);
+		list.insert(16, list.first);
+		list.insert(8, list.first);
+		list.insert(9, list.first);
+
+		list.print();
+
+		// test the delete in LL
+		ListNode dup = list.delete(1);
+		System.out.println();
+
+		if (dup != null)
+			System.out.println("Found key: " + dup.data);
+		else
+			System.out.println("Cannot find element");
+
+		System.out.println("The list is after deleting:  ");
+		list.print();
+
+		// Method to delete middle element
+		list.deleteMiddle();
+		System.out.println();
+		System.out.println("Removed mid element, now the list is: ");
+		list.print();
+		System.out.println();
+
+		// Method to get the KthElement frm last
+		ListNode kth = list.KthToLast(3);
+		System.out.println("Kth element from last is: " + kth.data);
+
+		// method to reverse the LL
+		list.reverse();
+		System.out.println("Reversed linked list ");
+		list.print();
+
+		// method to get the LL intersection
+		LinkedList1 one = new LinkedList1();
+		one.insert(12, one.first);
+		one.insert(43, one.first);
+		one.insert(15, one.first);
+		one.insert(33, one.first);
+
+		LinkedList1 two = new LinkedList1();
+		ListNode node = one.find(15);
+		two.insert(33, two.first);
+		two.insert(15, two.first);
+		two.insert(43, two.first);
+		two.insert(12, two.first);
+		//two.insert(12, node);
+		System.out.println();
+		System.out.println("node one is:");
+		one.print();
+		System.out.println();
+		System.out.println("node two is:");
+		two.print();
+		System.out.println();
+
+		// isIntersected?
+		//System.out.println("is the two lists intersected? " + one.isIntersected(one.first, two.first));
+
+		// get the intersecting node
+		//System.out.println("Intersected node is: " + (one.intersect(one.first, two.first)).data);
+
+		//isPalindrome
+		System.out.println("is two list a palindrome?: " +  one.isPalindrome(one, two));
+	
+	}
+}
+
+class ListNode {
+
+	int data;
+	ListNode next;
+
+	public ListNode(int d) {
+		this.data = d;
+	}
+
+}
+
+class LinkedList1 {
+
+	ListNode first;
+
+	LinkedList1() {
+		this.first = null;
+	}
+
+	public void insert(int data, ListNode next) {
+		ListNode ins = new ListNode(data);
+		ins.next = next;
+		first = ins;
+	}
+
+	public ListNode find(int key) {
+		ListNode current = first;
+
+		while (current.data != key) {
+			if (current.next == null)
+				return null;
+			else
+				current = current.next;
+		}
+		return current;
+	}
+
+	public ListNode delete(int data) {
+		ListNode current = first;
+		ListNode previous = first;
+
+		if (current.next == null && previous.next == null && current.data != data) {
+			return null;
+		}
+
+		if (current.next == null && current.data == data) {
+			return current;
+		}
+
+		// delete the first occuring element.
+		while (current.data != data) {
+			previous = current;
+			current = current.next;
+		}
+
+		if (current.data == data) {
+			previous.next = current.next;
+		}
+
+		return current;
+	}
+
+	// Method to delete duplicate elements
+	public ListNode deleteDup(int data) {
+		ListNode current = first;
+		ListNode previous = first;
+
+		if (current.next == null && previous.next == null && current.data != data) {
+			return null;
+		}
+
+		if (current.next.next == null && current.next.data == data && previous.data == data) {
+			return current;
+		}
+
+		// delete the duplicate elements
+		while (current != null) {
+			ListNode curr = current;
+			int num = curr.data;
+			while (curr.next != null) {
+				if (curr.next.data == num) {
+					// previous.next = curr.next;
+					curr.next = curr.next.next;
+				} else {
+					previous = curr;
+					curr = curr.next;
+				}
+			}
+			current = current.next;
+		}
+
+		return current;
+	}
+
+	public ListNode deleteMiddle() {
+		ListNode current = first;
+
+		int mid = this.count() / 2;
+		int count = 0;
+
+		if (current == null) {
+			return null;
+		}
+
+		if (current.next == null) {
+			System.out.println("Theres only one element, cannot delete");
+			return null;
+		}
+
+		while (current != null) {
+			if (count + 1 == mid) {
+				current.next = current.next.next;
+				return current;
+			} else {
+				count++;
+				current = current.next;
+			}
+		}
+		return current;
+
+	}
+
+	public ListNode KthToLast(int k) {
+		ListNode current = first;
+
+		int total = this.count();
+
+		if (total < k) {
+			System.out.println("total elemet is less than k");
+			return null;
+		}
+		int kth = total - k;
+		if (current == null) {
+			return null;
+		}
+
+		int count = 0;
+		while (current != null) {
+			if (count == kth) {
+				return current;
+			} else {
+				count++;
+				current = current.next;
+			}
+		}
+		return current;
+	}
+
+	public boolean isPalindrome(LinkedList1 one, LinkedList1 two) {
+		ListNode reverse = one.reverse();
+		ListNode second = two.first;
+		
+		if(two.count()!= one.count())
+			return false;
+		
+		int count =0;
+		while(true) {
+			if(reverse.data == second.data) {
+				count ++;
+				reverse = reverse.next;
+				second = second.next;
+				if(count == one.count()) {
+					return true;
+				}
+			}
+			else {
+				return false;
+			}
+			
+		}
+	}
+
+	public ListNode reverse() {
+		ListNode current = first;
+		ListNode prev = null;
+		ListNode next = null;
+		while (current != null) {
+			next = current.next;
+			current.next = prev;
+			prev = current;
+			current = next;
+		}
+		first = prev;
+		return first;
+	}
+
+	public boolean isIntersected(ListNode one, ListNode two) {
+
+		while (true) {
+			if (one.data == two.data) {
+				return true;
+			}
+			one = one.next;
+			two = two.next;
+		}
+	}
+
+	public ListNode intersect(ListNode one, ListNode two) {
+
+		ListNode A = one;
+		ListNode B = two;
+
+		while (A.next != null) {
+			if (A == null || B == null) {
+				return null;
+			}
+			if (A.data == B.data) {
+				return B;
+			}
+			A = A.next;
+			B = B.next;
+		}
+		return null;
+
+	}
+
+	// detect if the singly LL is circular. That is last node points to one of the
+	// nodes
+	public boolean hasLoop(ListNode first) {
+		if (first == null) // list does not exist..so no loop either
+			return false;
+
+		ListNode slow, fast; // create two references.
+
+		slow = fast = first; // make both refer to the start of the list
+
+		while (true) {
+
+			slow = slow.next; // 1 hop
+
+			if (fast.next != null)
+				fast = fast.next.next; // 2 hops
+			else
+				return false; // next node null => no loop
+
+			if (slow == null || fast == null) // if either hits null..no loop
+				return false;
+
+			if (slow == fast) // if the two ever meet...we must have a loop
+				return true;
+		}
+	}
+
+	
+	
+	public int count() {
+		ListNode current = first;
+		int count = 0;
+
+		while (current != null) {
+			count++;
+			current = current.next;
+		}
+		return count;
+	}
+
+	public boolean isEmpty() {
+		return first == null;
+	}
+
+	public void print() {
+		ListNode current = first;
+
+		while (current != null) {
+			System.out.print(current.data + " ");
+			current = current.next;
+		}
+
+	}
+
+}
