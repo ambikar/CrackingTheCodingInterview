@@ -1,0 +1,80 @@
+package test.test1;
+
+class Solution {
+	public static void main(String args[]) {
+		Stack stack = new Stack(5);
+		stack.push(12);
+		stack.push(20);
+		stack.push(10);
+		stack.push(40);
+
+		System.out.println("Min is: " + stack.min());
+
+		Stack temp = Solution.sortStack(stack);
+
+		 while(!stack.isEmpty()){
+		 System.out.println(stack.pop());
+		 }
+
+		while (!temp.isEmpty()) {
+			System.out.println(temp.pop());
+		}
+	}
+
+	static Stack sortStack(Stack stk) {
+		Stack temp = new Stack(stk.size);
+		
+		while (!stk.isEmpty()) {
+			int tmp = stk.pop();
+			while (!temp.isEmpty() && temp.peak() > tmp) {
+				stk.push(temp.pop());
+			}
+			temp.push(tmp);
+		}
+			return temp;
+		}
+	}
+
+class Stack{
+	int size;
+	int[] data;
+	int top;
+	int min;
+	
+	Stack(int s){
+		this.size = s;
+		data = new int[s];
+		top = -1;
+	}
+	
+	void push(int val) {
+		if(top == -1) {
+			min = val;
+		}
+		else if(this.peak()< val) {
+			min = this.peak();
+		}
+		
+		data[++top] = val;
+	}
+	
+	int pop() {
+		return data[top--];
+	}
+	
+	int peak() {
+		return data[top];
+	}
+	
+	boolean isEmpty() {
+		return (top == -1);
+	}
+	
+	boolean isFull() {
+		return(top == size-1);
+	}
+	
+	int min() {
+		return min;
+	}
+}
