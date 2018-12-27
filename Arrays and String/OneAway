@@ -69,3 +69,93 @@ class Solution {
 		return false;
 	}
 }
+
+
+
+
+
+option2:
+
+package test.test1;
+
+public class Solution {
+
+	public static void main(String[] args) {
+		Solution sol = new Solution();
+		System.out.println(sol.oneAway(null, "palse"));
+	}
+
+	private boolean oneAway(String s1, String s2) {
+
+		if(s1==null || s2==null)
+			return false;
+		
+		if(s1.equals(s2))
+			return false;
+		
+		// remove code
+		if (s1.length() - 1 == s2.length()) {
+			int countEdit = 0;
+
+			for (int i = 0; i < s2.length(); i++) {
+				if (s1.charAt(i) != s2.charAt(i))
+					countEdit++;
+			}
+			if (countEdit <= s2.length()) {
+				System.out.println("Yes, its one edit away by deleting");
+				return true;
+			} else {
+				System.out.println("No, its not one edit away by deleting");
+				return false;
+			}
+
+		}
+
+		
+		// add code
+		else if (s1.length() + 1 == s2.length()) {
+			int countEdit = 0;
+
+			for (int i = 0; i < s1.length(); i++) {
+				if (s1.charAt(i) != s2.charAt(i))
+					countEdit++;
+			}
+			if (countEdit <= s2.length()) {
+				System.out.println("Yes, its one edit away by add");
+				return true;
+			} else {
+				System.out.println("No, its not one edit away by add");
+				return false;
+			}
+		}
+
+		
+		
+		// edit code
+		else if (s1.length() == s2.length()) {
+			int countEdit = 0;
+
+			for (int i = 0; i < s1.length(); i++) {
+				if (s1.charAt(i) != s2.charAt(i))
+					countEdit++;
+			}
+
+			if (countEdit == 1) {
+				System.out.println("Yes, its one edit away by replacing");
+				return true;
+			} else {
+				System.out.println("No, its not one edit away by replacing");
+				return false;
+			}
+		}
+		
+		
+		else {
+			System.out.println(("Its not one editaway"));
+			return false;
+		}
+		
+	}
+
+}
+
