@@ -8,8 +8,11 @@ public class Solution {
 	
 	public static void main(String args[]) {
 			Solution so = new Solution();
+			char[] chars = "Mr John Smith       ".toCharArray();
+
 			System.out.println(so.replace("john smith mr"));
-			
+			System.out.println(u.replaceSpaces(chars, 13));
+
 	}
 
 public String replace(String str) {
@@ -23,4 +26,32 @@ public String replace(String str) {
 
     return sentence.toString();
 }
+public String replaceSpaces(char[] chars, int len) {
+		if (chars == null) {
+			return "";
+		}
+		int spaceCount = 0;
+		int index = 0;
+		// first loop, locate last position
+		for (int i = 0; i < len; i++) {
+			if (chars[i] == ' ') {
+				spaceCount++;
+			}
+		}
+		index = len + spaceCount * 2;
+		// second loop, replace spaces from the end
+		for (int i = len - 1; i >= 0; i--) {
+			if (chars[i] == ' ') {
+				chars[index--] = '0';
+				chars[index--] = '2';
+				chars[index--] = '%';
+				
+			} else {
+				chars[index--] = chars[i];
+				
+			}
+		}
+		System.out.println(chars);
+		return new String(chars).trim();
+	}
 }
