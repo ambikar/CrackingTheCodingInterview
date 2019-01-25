@@ -1,0 +1,277 @@
+package test.test1;
+
+import java.util.*;
+
+public class Solution {
+
+	static LinkedList first;
+	static LinkedList sorted = null;
+
+	public static void main(String[] args) {
+		
+		Solution sol = new Solution();
+		sol.insert(18);
+		sol.insert(18);
+		sol.insert(54);
+		sol.insert(18);
+		sol.insert(80);
+		sol.printList(first);
+		
+		sol.deDup(first);
+		
+		sol.printList(first);
+
+	}
+	
+	
+
+	private void deDup(LinkedList n) {
+		
+		while(n!=null) {
+			LinkedList curr = n;
+			while(curr.next!=null) {
+				if(n.data == curr.next.data) {
+					curr.next = curr.next.next;
+				}
+				else {
+					curr = curr.next;
+				}
+			}
+			n = n.next;
+			
+		}
+		
+	
+	}
+
+	
+private void insertionSort(LinkedList first) {
+		
+		sorted = null;
+		LinkedList current = first;
+		while(current!=null) {
+			LinkedList nt = current.next;
+			sort(current);
+			current =nt;
+		}
+		first = sorted;
+		
+	}
+
+	private void sort(LinkedList newNode) {
+		if(sorted ==null || sorted.data >= newNode.data) {
+			newNode.next = sorted;
+			sorted = newNode;
+		}
+		else {
+			LinkedList current = sorted;
+			while(current.next!=null &&  newNode.data > current.next.data) {
+				current = current.next;
+			}
+			newNode.next = current.next;
+			current.next = newNode;
+
+		}
+	}
+	
+	public boolean isIntersect(LinkedList first, LinkedList second) {
+		int l1 = this.getCount(first);
+		int l2 = this.getCount(second);
+		
+		if(l1 > l2) {
+			int diff = l1 - l2;
+			
+			while(diff!=0) {
+				first = first.next;
+				diff--;
+			}
+			
+		}
+		
+		else if( l2 > l1) {
+			int diff = l2- l1;
+			
+			while(diff!=0) {
+				first = second.next;
+				diff--;
+			}
+			
+		}
+		
+		while(first!=null && second != null) {
+			if(first.data == second.data) {
+				 return true;
+			}
+			else {
+				first = first.next;
+				second = second.next;
+			}
+		}
+		
+		return false;
+	}
+
+	
+	public boolean isLoop(LinkedList first) {
+		LinkedList current = first;
+		LinkedList mid = first;
+		
+		while(current != null && current.next!= null) {
+			current = current.next.next;
+			mid = mid.next;
+			if(mid == current)
+				return true;
+			
+		}
+		
+		return false;
+	}
+	
+	
+	public LinkedList getMidNode() {
+		LinkedList current = first;
+		LinkedList mid = first;
+		
+		while(current != null && current.next!= null) {
+			current = current.next.next;
+			mid = mid.next;
+		}
+		
+		System.out.println("mid is: " +mid.data);
+		return mid;
+	}
+	
+	//check pali by reversing half and comparing with other half
+	public boolean isPaliReverseHalf() {
+		LinkedList half = this.getMidNode();
+		
+		half = this.reverse(half);
+
+		while(half!=null && first!= null) {
+			if(first.data == half.data) {
+				first  = first.next;
+				half = half.next;
+				continue;
+			}
+			else {
+				System.out.println("its not pali");
+				return false;
+			}
+		}		
+		return true;
+	}
+	//check pali by reversing entire list
+	public boolean isPalindrome() {		
+		LinkedList orig = first;
+		LinkedList rev = this.reverse(first);
+
+		while(rev != null && orig != null) {
+			if(rev.data == orig.data) {
+				rev = rev.next;
+				orig = orig.next;
+				continue;
+			}
+				
+			else
+				return false;
+		}
+
+		return true;
+	}
+	
+	
+	public LinkedList reverse(LinkedList test) {
+		LinkedList current = test;
+		LinkedList prev = null;
+		LinkedList next = null;
+		
+		while(current!= null) {
+			next = current.next;
+			current.next = prev;
+			prev = current;
+			current = next;
+		}
+
+		test = prev;
+		
+		return test;
+	}
+	
+	public void isAvail(int data) {
+		LinkedList current = first;
+
+		while (current != null) {
+			if (current.data == data) {
+				System.out.println("found");
+				break;
+			} else
+				current = current.next;
+		}
+
+		if (current == null)
+			System.out.println("data not found");
+	}
+
+	public void insert(int data) {
+		LinkedList list = new LinkedList(data);
+		list.next = first;
+		first = list;
+	}
+
+	public void delete(int data) {
+		LinkedList current = first;
+		LinkedList prev = first;
+
+		if (first.data == data) {
+			first = first.next;
+		}
+		while (current != null) {
+			if (current.data == data) {
+				prev.next = current.next;
+				break;
+			} 
+			else {
+				prev = current;
+				current = current.next;
+			}
+		}
+		if (current == null)
+			System.out.println("not found");
+	}
+
+	public int getCount(LinkedList list) {
+		LinkedList current = list;
+
+		int count = 0;
+		while (current != null) {
+			count++;
+			current = current.next;
+		}
+		return count;
+	}
+
+	public void printList(LinkedList lis) {
+//		LinkedList list = lis;
+
+		while (lis != null) {
+			System.out.print(lis.data + " ");
+			lis = lis.next;
+		}
+		System.out.println();
+	}
+}
+
+class LinkedList {
+
+	int data;
+	LinkedList next;
+
+	
+	public LinkedList() {
+		
+	}
+	public LinkedList(int val) {
+		this.data = val;
+		this.next = null;
+	}
+}
