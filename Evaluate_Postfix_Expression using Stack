@@ -1,0 +1,188 @@
+package test.test1;
+
+//convert infix to postfix
+public class Solution {
+
+	Stack1 stk;
+	String output;
+	int postOutput;
+	 Stack1 stk1;
+
+	Solution(String input) {
+		stk = new Stack1(input.length());
+		output = "";
+	}
+
+	public static void main(String[] args) {
+		String input = "A+B*C";
+		Solution sol = new Solution(input);
+
+		sol.doInToPostTrans(input);
+		System.out.println();
+		sol.evaluatePost("345+*612+/-");
+	}
+//evaluate post
+	private void evaluatePost(String input1) {
+		stk1 = new Stack1(input1.length());
+		int interOp = 0;
+
+		for (int i = 0; i < input1.length(); i++) {
+			char ch = input1.charAt(i);
+
+			if (ch >= '0' && ch <= '9') {
+				stk1.push((int) ch - '0');
+				
+			} else {
+				int num1 = stk1.pop();
+				int num2 = stk1.pop();
+				
+
+				switch (ch) {
+				case '+': {
+					interOp = num1 + num2;
+					break;
+
+				}
+				case '-': {
+					interOp = num1 - num2;
+					break;
+
+				}
+				case '*': {
+					interOp = num1 * num2;
+					break;
+				}
+				case '/': {
+					interOp = num1 / num2;
+					break;
+				}
+				}
+				stk1.push(interOp);
+
+			}
+		}
+		postOutput = stk1.pop();
+
+		System.out.println(postOutput);
+	}
+
+//Infix to Postfix ((Refer Robert Lafore's Stack chapter)
+	private void doInToPostTrans(String input) {
+
+		for (int i = 0; i < input.length(); i++) {
+			char ch = input.charAt(i);
+
+			switch (ch) {
+			case '+':
+			case '-':
+				this.gotOperator(ch, 1);
+				break;
+			case '*':
+			case '/':
+				this.gotOperator(ch, 2);
+				break;
+			case '(':
+				stk.push(ch);
+				break;
+			case ')':
+				this.gotParan(ch);
+				break;
+			default:
+				output = output + ch;
+				break;
+			}
+		}
+
+		while (!stk.isEmpty()) { // pop remaining elements in stack
+			output = output + stk.pop();
+		}
+
+		System.out.println(output);
+
+	}
+
+	private void gotParan(char ch) {
+
+		while (!stk.isEmpty()) {
+			int c = stk.pop();
+			if (c == '(') {
+				break;
+			} else {
+				output = output + c;
+			}
+		}
+	}
+
+	private void gotOperator(char ch, int precedence) {
+
+		while (!stk.isEmpty()) {
+			int opTop = stk.pop();
+
+			if (opTop == '(') {
+				stk.push(opTop);
+				break;
+			} else {
+				int popPrecedence;
+
+				if (opTop == '+' || opTop == '-') {
+					popPrecedence = 1;
+				} else
+					popPrecedence = 2;
+
+				if (popPrecedence < precedence) {
+					stk.push(opTop);
+					break;
+				} else
+					output = output + opTop;
+			}
+
+		}
+		stk.push(ch);
+	}
+}
+
+class Stack1 {
+
+	int[] data;
+	int index;
+	int min;
+	int size;
+
+	Stack1(int size) {
+		this.size = size;
+		index = -1;
+		data = new int[size];
+	}
+
+	void push(int opTop) {
+		if (index == -1)
+			min = opTop;
+		else {
+			if (opTop < min) {
+				min = opTop;
+			}
+		}
+		data[++index] = opTop;
+	}
+
+	int pop() {
+		return data[index--];
+	}
+
+	int peak() {
+		return data[index];
+	}
+
+	boolean isFull() {
+		return (index == size - 1);
+	}
+
+	boolean isEmpty() {
+		return (index == -1);
+	}
+
+	int size() {
+		return index + 1;
+	}
+
+}
